@@ -1,0 +1,23 @@
+carrier:
+- The whole website is in Arabic
+- Colors: Carrier's colors
+- eb3d el kalam 3n ba3do fe el header ely foo2 5ales (beta3t arkam el telephonat)
+- hat swar mn freepik ll takyefat 3omoman
+- about us -> صيانة كاريير
+- el arkam
+	- 24 استقبال ساعة (صورة ساعة الي فوق)
+	- اكتر من 400 فني مدرب (اي بني ادم لابس خوذة)
+- soret customer services kteer fe el sora beta3t elm3ml w n7ot paragraph الخط الساخن 
+
+- featured services div -> نحط فيها صيانة تكييفات كاريير 
+- 7ot makan services paragaraph اتصل بنا
+- ems7 Testimonials w doctors w Gallery w pricing w FAQs w el map
+- 7ot el privacy policy
+- ems7 el social links
+
+- dashboard 3shan t8yr arkam el telephonat w el articles beta3t el blogs
+- ghayr el departments bel blogs
+
+
+<a href="tel:01112986699">01112986699</a>
+<a href="https://wa.me/01112986655">01112986655</a> 

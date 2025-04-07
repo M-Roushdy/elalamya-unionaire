@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - مركز صيانة كاريير</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Favicons -->
+    <link href="assets/img/logo.png" rel="icon">
+    <link href="assets/img/logo.png" rel="apple-touch-icon">
+  <style>
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f8f9fa;
+    }
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .dashboard-header {
+      background-color: #007bff;
+      color: white;
+      padding: 20px;
+      border-radius: 5px;
+      margin-bottom: 30px;
+    }
+    .form-section {
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .preview-section {
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 5px;
+      border: 1px solid #dee2e6;
+    }
+    .btn-save {
+      background-color: #28a745;
+      color: white;
+    }
+    .btn-save:hover {
+      background-color: #218838;
+    }
+    .department-item {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      background-color: white;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <div class="dashboard-header text-center">
+      <h1>لوحة تحكم مركز صيانة كاريير</h1>
+      <p>قم بتعديل محتوى الموقع بسهولة</p>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <!-- Phone Numbers Section -->
+        <div class="form-section">
+          <h3>تعديل أرقام الهواتف</h3>
+          <form id="phoneNumbersForm">
+            <div class="mb-3">
+              <label for="phoneNumber" class="form-label">رقم الهاتف الرئيسي</label>
+              <input type="text" class="form-control" id="phoneNumber" value="01112986699">
+            </div>
+            <div class="mb-3">
+              <label for="whatsappNumber" class="form-label">رقم الواتساب</label>
+              <input type="text" class="form-control" id="whatsappNumber" value="01112986655">
+            </div>
+            <button type="submit" class="btn btn-save">حفظ التغييرات</button>
+          </form>
+        </div>
+
+        <!-- Departments Section -->
+        <div class="form-section">
+          <h3>إدارة الأقسام/المقالات</h3>
+          <div id="departmentsList">
+            <!-- Departments will be added here dynamically -->
+          </div>
+          <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addDepartmentModal">إضافة قسم جديد</button>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <!-- Preview Section -->
+        <div class="preview-section">
+          <h3 class="text-center mb-4">معاينة التغييرات</h3>
+          
+          <!-- Phone Numbers Preview -->
+          <div class="mb-4">
+            <h5>أرقام الهواتف:</h5>
+            <p><strong>الهاتف:</strong> <span id="phonePreview">01112986699</span></p>
+            <p><strong>الواتساب:</strong> <span id="whatsappPreview">01112986655</span></p>
+          </div>
+          
+          <!-- Departments Preview -->
+          <div>
+            <h5>الأقسام/المقالات:</h5>
+            <div id="departmentsPreview">
+              <!-- Departments preview will be shown here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Department Modal -->
+  <div class="modal fade" id="addDepartmentModal" tabindex="-1" aria-labelledby="addDepartmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addDepartmentModalLabel">إضافة قسم/مقال جديد</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addDepartmentForm">
+            <div class="mb-3">
+              <label for="departmentTitle" class="form-label">عنوان القسم/المقال</label>
+              <input type="text" class="form-control" id="departmentTitle" required>
+            </div>
+            <div class="mb-3">
+              <label for="departmentContent" class="form-label">محتوى القسم/المقال</label>
+              <textarea class="form-control" id="departmentContent" rows="5" required></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+          <button type="button" class="btn btn-primary" id="saveDepartmentBtn">حفظ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Department Modal -->
+  <div class="modal fade" id="editDepartmentModal" tabindex="-1" aria-labelledby="editDepartmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editDepartmentModalLabel">تعديل قسم/مقال</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editDepartmentForm">
+            <input type="hidden" id="editDepartmentId">
+            <div class="mb-3">
+              <label for="editDepartmentTitle" class="form-label">عنوان القسم/المقال</label>
+              <input type="text" class="form-control" id="editDepartmentTitle" required>
+            </div>
+            <div class="mb-3">
+              <label for="editDepartmentContent" class="form-label">محتوى القسم/المقال</label>
+              <textarea class="form-control" id="editDepartmentContent" rows="5" required></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+          <button type="button" class="btn btn-primary" id="updateDepartmentBtn">تحديث</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Sample departments data
+    let departments = [
+      { id: 1, title: "صيانة مكيفات كاريير", content: "نقدم خدمات صيانة شاملة لمكيفات كاريير بجميع أنواعها." },
+      { id: 2, title: "قطع غيار أصلية", content: "نوفر قطع غيار أصلية لجميع موديلات مكيفات كاريير." }
+    ];
+
+    // DOM elements
+    const phoneNumbersForm = document.getElementById('phoneNumbersForm');
+    const phoneNumberInput = document.getElementById('phoneNumber');
+    const whatsappNumberInput = document.getElementById('whatsappNumber');
+    const phonePreview = document.getElementById('phonePreview');
+    const whatsappPreview = document.getElementById('whatsappPreview');
+    const departmentsList = document.getElementById('departmentsList');
+    const departmentsPreview = document.getElementById('departmentsPreview');
+    const addDepartmentForm = document.getElementById('addDepartmentForm');
+    const saveDepartmentBtn = document.getElementById('saveDepartmentBtn');
+    const editDepartmentForm = document.getElementById('editDepartmentForm');
+    const updateDepartmentBtn = document.getElementById('updateDepartmentBtn');
+
+    // Initialize the dashboard
+    document.addEventListener('DOMContentLoaded', function() {
+      // Load phone numbers
+      const savedPhone = localStorage.getItem('carrierPhone');
+      const savedWhatsapp = localStorage.getItem('carrierWhatsapp');
+      
+      if (savedPhone) {
+        phoneNumberInput.value = savedPhone;
+        phonePreview.textContent = savedPhone;
+      }
+      
+      if (savedWhatsapp) {
+        whatsappNumberInput.value = savedWhatsapp;
+        whatsappPreview.textContent = savedWhatsapp;
+      }
+      
+      // Load departments from localStorage if available
+      const savedDepartments = localStorage.getItem('carrierDepartments');
+      if (savedDepartments) {
+        departments = JSON.parse(savedDepartments);
+      }
+      
+      renderDepartments();
+      renderDepartmentsPreview();
+    });
+
+    // Handle phone numbers form submission
+    phoneNumbersForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const phone = phoneNumberInput.value;
+      const whatsapp = whatsappNumberInput.value;
+      
+      // Update preview
+      phonePreview.textContent = phone;
+      whatsappPreview.textContent = whatsapp;
+      
+      // Save to localStorage
+      localStorage.setItem('carrierPhone', phone);
+      localStorage.setItem('carrierWhatsapp', whatsapp);
+      
+      alert('تم حفظ أرقام الهواتف بنجاح');
+    });
+
+    // Handle adding new department
+    saveDepartmentBtn.addEventListener('click', function() {
+      const title = document.getElementById('departmentTitle').value;
+      const content = document.getElementById('departmentContent').value;
+      
+      if (!title || !content) {
+        alert('الرجاء إدخال عنوان ومحتوى للقسم');
+        return;
+      }
+      
+      const newDepartment = {
+        id: Date.now(), // Use timestamp as unique ID
+        title: title,
+        content: content
+      };
+      
+      departments.push(newDepartment);
+      saveDepartments();
+      renderDepartments();
+      renderDepartmentsPreview();
+      
+      // Reset form and close modal
+      addDepartmentForm.reset();
+      bootstrap.Modal.getInstance(document.getElementById('addDepartmentModal')).hide();
+    });
+
+    // Handle editing department
+    updateDepartmentBtn.addEventListener('click', function() {
+      const id = parseInt(document.getElementById('editDepartmentId').value);
+      const title = document.getElementById('editDepartmentTitle').value;
+      const content = document.getElementById('editDepartmentContent').value;
+      
+      if (!title || !content) {
+        alert('الرجاء إدخال عنوان ومحتوى للقسم');
+        return;
+      }
+      
+      const index = departments.findIndex(dept => dept.id === id);
+      if (index !== -1) {
+        departments[index] = { id, title, content };
+        saveDepartments();
+        renderDepartments();
+        renderDepartmentsPreview();
+        
+        // Close modal
+        bootstrap.Modal.getInstance(document.getElementById('editDepartmentModal')).hide();
+      }
+    });
+
+    // Function to render departments list
+    function renderDepartments() {
+      departmentsList.innerHTML = '';
+      
+      if (departments.length === 0) {
+        departmentsList.innerHTML = '<p>لا توجد أقسام/مقالات مضافة بعد</p>';
+        return;
+      }
+      
+      departments.forEach(dept => {
+        const deptElement = document.createElement('div');
+        deptElement.className = 'department-item';
+        deptElement.innerHTML = `
+          <h5>${dept.title}</h5>
+          <p>${dept.content.substring(0, 50)}...</p>
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-sm btn-warning me-2 edit-btn" data-id="${dept.id}">تعديل</button>
+            <button class="btn btn-sm btn-danger delete-btn" data-id="${dept.id}">حذف</button>
+          </div>
+        `;
+        
+        departmentsList.appendChild(deptElement);
+      });
+      
+      // Add event listeners to edit and delete buttons
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const id = parseInt(this.getAttribute('data-id'));
+          editDepartment(id);
+        });
+      });
+      
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const id = parseInt(this.getAttribute('data-id'));
+          deleteDepartment(id);
+        });
+      });
+    }
+
+    // Function to render departments preview
+    function renderDepartmentsPreview() {
+      departmentsPreview.innerHTML = '';
+      
+      if (departments.length === 0) {
+        departmentsPreview.innerHTML = '<p>لا توجد أقسام/مقالات لعرضها</p>';
+        return;
+      }
+      
+      departments.forEach(dept => {
+        const deptElement = document.createElement('div');
+        deptElement.className = 'mb-3 p-2 border-bottom';
+        deptElement.innerHTML = `
+          <h6>${dept.title}</h6>
+          <p class="small">${dept.content.substring(0, 100)}...</p>
+        `;
+        
+        departmentsPreview.appendChild(deptElement);
+      });
+    }
+
+    // Function to edit a department
+    function editDepartment(id) {
+      const department = departments.find(dept => dept.id === id);
+      if (department) {
+        document.getElementById('editDepartmentId').value = department.id;
+        document.getElementById('editDepartmentTitle').value = department.title;
+        document.getElementById('editDepartmentContent').value = department.content;
+        
+        const modal = new bootstrap.Modal(document.getElementById('editDepartmentModal'));
+        modal.show();
+      }
+    }
+
+    // Function to delete a department
+    function deleteDepartment(id) {
+      if (confirm('هل أنت متأكد من حذف هذا القسم/المقال؟')) {
+        departments = departments.filter(dept => dept.id !== id);
+        saveDepartments();
+        renderDepartments();
+        renderDepartmentsPreview();
+      }
+    }
+
+    // Function to save departments to localStorage
+    function saveDepartments() {
+      localStorage.setItem('carrierDepartments', JSON.stringify(departments));
+    }
+  </script>
+</body>
+</html>
